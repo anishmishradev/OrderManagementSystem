@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using OrderManagement.Application.Common;
 using OrderManagement.Application.Customers.DTOs;
 using OrderManagement.Application.Interfaces.Services;
 
@@ -7,7 +8,7 @@ namespace OrderManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public sealed class CustomersController : ControllerBase
+public class CustomersController : ControllerBase
 {
     private readonly ICustomerService _customerService;
     private readonly ILogger<CustomersController> _logger;
@@ -20,55 +21,92 @@ public sealed class CustomersController : ControllerBase
         _logger = logger;
     }
 
-    // POST: api/customers
     [HttpPost]
-    public async Task<ActionResult<CustomerResponse>> Create(
+    public async Task<ActionResult<ApiResponse<CustomerResponse>>> Create(
         [FromBody] CreateCustomerRequest request,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Create customer request received");
+        try
+        {
+            _logger.LogInformation("Create customer request received");
 
-        var customer = await _customerService.CreateAsync(
-            request, cancellationToken);
+            var customer = await _customerService.CreateAsync(
+                request, cancellationToken);
 
-        _logger.LogInformation(
-            "Customer created. CustomerId: {CustomerId}",
-            customer.Id);
+            _logger.LogInformation(
+                "Customer created. CustomerId: {CustomerId}",
+                customer.Id);
 
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = customer.Id },
-            customer);
+            var response = ApiResponse<CustomerResponse>.Ok(
+                customer,
+                "Customer created successfully",
+                StatusCodes.Status201Created);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = customer.Id },
+                response);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid customer request");
+
+            return BadRequest(
+                ApiResponse<CustomerResponse>.Fail(
+                    ex.Message,
+                    StatusCodes.Status400BadRequest));
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Customer creation conflict");
+
+            return Conflict(
+                ApiResponse<CustomerResponse>.Fail(
+                    ex.Message,
+                    StatusCodes.Status409Conflict));
+        }
     }
 
-    // GET: api/customers/1
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<CustomerResponse>> GetById(
+    public async Task<ActionResult<ApiResponse<CustomerResponse>>> GetById(
         int id,
         CancellationToken cancellationToken)
     {
+        if (id <= 0)
+        {
+            return BadRequest(
+                ApiResponse<CustomerResponse>.Fail(
+                    "Invalid customer ID",
+                    StatusCodes.Status400BadRequest));
+        }
+
         var customer = await _customerService.GetByIdAsync(
             id, cancellationToken);
 
-        if (customer == null)
+        if (customer is null)
         {
-            return NotFound(new
-            {
-                Message = "Customer not found"
-            });
+            return NotFound(
+                ApiResponse<CustomerResponse>.Fail(
+                    "Customer not found",
+                    StatusCodes.Status404NotFound));
         }
 
-        return Ok(customer);
+        return Ok(
+            ApiResponse<CustomerResponse>.Ok(
+                customer,
+                "Customer retrieved successfully"));
     }
 
-    // GET: api/customers
     [HttpGet]
-    public async Task<ActionResult<List<CustomerResponse>>> GetAll(
+    public async Task<ActionResult<ApiResponse<List<CustomerResponse>>>> GetAll(
         CancellationToken cancellationToken)
     {
         var customers = await _customerService.GetAllAsync(
             cancellationToken);
 
-        return Ok(customers);
+        return Ok(
+            ApiResponse<List<CustomerResponse>>.Ok(
+                customers,
+                "Customers retrieved successfully"));
     }
 }
