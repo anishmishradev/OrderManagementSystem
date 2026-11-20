@@ -1,4 +1,4 @@
-namespace OrderManagement.Application.Customers;
+namespace OrderManagement.Application.Customers.DTOs;
 /// <summary>
 /// Customer Response
 /// </summary>

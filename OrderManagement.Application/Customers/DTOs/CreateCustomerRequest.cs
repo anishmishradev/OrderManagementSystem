@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace OrderManagement.Application.Customers;
+namespace OrderManagement.Application.Customers.DTOs;
 
 public class CreateCustomerRequest
 {
