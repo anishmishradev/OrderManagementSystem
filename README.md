@@ -1,278 +1,177 @@
+# Order Management System
 
-Order Management System
-An ASP.NET Core 8 Web API for managing customers, products, orders, and inventory using SQL Server, Entity Framework Core Code First, and JWT authentication.
+ASP.NET Core 8 Web API for customer, product, order, and inventory management using SQL Server, Entity Framework Core Code First, and JWT authentication.
 
-1. Features
-  Customer and Product Management
-  Order Creation and Order Details
-  Order Status Management
-  Stock Validation and Inventory Management
-  Automatic Stock Restoration on Order Cancellation
-  JWT Authentication and Authorization
-  Global Exception Handling Middleware
-  Request and Response Logging Middleware
-  Structured Logging using Serilog
-  Swagger API Documentation
-  Entity Framework Core Code First Migrations
-  Standardized API Responses
+## 1. Features
 
-2. Prerequisites
-Windows
-================================
-Visual Studio 2022 with ASP.NET and Web Development workload
-.NET 8 SDK
-SQL Server Developer Edition or SQL Server Express
-SQL Server Management Studio (SSMS)
-Docker Desktop (optional)
-Git
-Postman
-=============================================
-macOS
-Visual Studio Code
-.NET 8 SDK
-Docker Desktop
-Git
-Postman
-============================================
-4. Clone and Open the Project
-Clone the GitHub repository:
+- Customer and product management
+- Order creation, retrieval, and status updates
+- Stock validation, deduction, and restoration on cancellation
+- JWT authentication and authorization
+- Global exception handling and request/response logging with Serilog
+- Swagger documentation and EF Core Code First migrations
+- Standardized API responses
 
+## 2. Prerequisites
+
+| Windows | macOS |
+|---|---|
+| Visual Studio 2022 (ASP.NET and web development workload) | Visual Studio Code |
+| .NET 8 SDK | .NET 8 SDK |
+| SQL Server Developer/Express **or** Docker Desktop | Docker Desktop (or access to a remote SQL Server) |
+| SQL Server Management Studio (SSMS), if using local SQL Server | — |
+| Git and Postman | Git and Postman |
+
+## 3. Clone and Open the Project
+
+```bash
 git clone https://github.com/anishmishradev/OrderManagementSystem.git
-
-Navigate to the project directory:
-
 cd OrderManagementSystem
+```
 
-Visual Studio (Windows)
+- **Windows / Visual Studio:** Open `OrderManagementSystem.sln` and set `OrderManagement.API` as the startup project.
+- **macOS / VS Code:** Open the repository folder with `code .`.
 
-Open OrderManagementSystem.sln and set OrderManagement.API as the startup project.
+## 4. Database Configuration
 
-Visual Studio Code (macOS)
+Choose **one** option.
 
-Open the project folder:
+### Option A — Docker (Windows/macOS)
 
-code .
-============================
-4. Database Configuration
-Choose either of the following SQL Server setup options.
+Start Docker Desktop and create a SQL Server 2022 container. Use the **same SQL Server password** as in your local `OrderManagement.API/appsettings.json` connection string.
 
-Option A — Using Docker (Windows/macOS)
-Start Docker Desktop.
+**macOS terminal:**
 
-macOS Terminal:
-
+```bash
 docker run --name sqlserver --platform linux/amd64 \
   -e ACCEPT_EULA=Y \
   -e MSSQL_SA_PASSWORD='YOUR_SQL_SERVER_PASSWORD' \
   -p 1433:1433 \
   -v sqlserver_data:/var/opt/mssql \
   -d mcr.microsoft.com/mssql/server:2022-latest
+```
 
-Windows PowerShell:
+**Windows PowerShell:**
 
-docker run --name sqlserver -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD="Password@12345" -p 1433:1433 -v sqlserver_data:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2022-latest
+```powershell
+docker run --name sqlserver -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD="YOUR_SQL_SERVER_PASSWORD" -p 1433:1433 -v sqlserver_data:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2022-latest
+```
 
-Use the SQL Server password configured in the existing appsettings.json when creating the container.
+If the container already exists, run `docker start sqlserver`. Check it using `docker ps`.
 
-If the container already exists, start it using:
+**Docker connection string** (`ConnectionStrings:DefaultConnection` in `OrderManagement.API/appsettings.json`):
 
-docker start sqlserver
+```text
+Server=localhost,1433;Database=OrderManagementDb;User Id=sa;Password=YOUR_SQL_SERVER_PASSWORD;TrustServerCertificate=True;
+```
 
-Verify that SQL Server is running:
+### Option B — Without Docker (Windows Only)
 
-docker ps
-===================================================
-Option B — Without Docker (Windows Only)
-Install SQL Server Developer Edition or SQL Server Express and SQL Server Management Studio (SSMS).
+Install **SQL Server Developer or Express** and **SQL Server Management Studio (SSMS)**. Start your SQL Server instance and use the corresponding connection string in `OrderManagement.API/appsettings.json`.
 
-Start the SQL Server instance and update the connection string in:
-================================================
-OrderManagement.API/appsettings.json
+**SQL Server Express (Windows authentication):**
 
-SQL Server Authentication:
+```text
+Server=localhost\SQLEXPRESS;Database=OrderManagementDb;Trusted_Connection=True;TrustServerCertificate=True;
+```
 
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=OrderManagementDb;User Id=sa;Password=Password@12345;TrustServerCertificate=True;"
+**SQL Server (SQL authentication):**
+
+```text
+Server=localhost;Database=OrderManagementDb;User Id=sa;Password=YOUR_SQL_SERVER_PASSWORD;TrustServerCertificate=True;
+```
+
+### Application Configuration
+
+`OrderManagement.API/appsettings.json` already contains the connection string, JWT settings, and admin account configuration. Change the connection string only if your database setup differs.
+
+**Default admin credentials:**
+
+```json
+{
+  "Auth": {
+    "Username": "admin",
+    "Password": "Admin@12345"
+  }
 }
+```
 
+JWT token expiry is configured as **30 minutes**. Use the existing JWT settings in the application configuration. The sample admin credentials are intended for this assessment only.
 
-Application Configuration
-The connection string, admin credentials, JWT configuration, and logging settings are already configured in OrderManagement.API/appsettings.json.
+## 5. Restore NuGet Packages and Build
 
-Use the existing configuration. Update only the database connection string if your SQL Server instance or credentials are different.
+**Visual Studio (Windows):** Right-click the solution → **Restore NuGet Packages**; then **Build → Build Solution** (`Ctrl + Shift + B`).
 
-The default application login credentials are:
+**Terminal (Windows/macOS):**
 
-"Auth": {
-  "Username": "admin",
-  "Password": "Admin@12345"
-}
-
-The JWT configuration is already available in appsettings.json with a token expiry of 30 minutes. No additional JWT configuration is required.
-
-5. Restore NuGet Packages and Build
-Visual Studio (Windows)
-Open OrderManagementSystem.sln.
-
-Right-click the solution in Solution Explorer.
-
-Select Restore NuGet Packages.
-
-Select Build → Build Solution, or press Ctrl + Shift + B.
-
-Visual Studio Code (macOS)
-Execute the following commands from the project root:
-
+```bash
 dotnet restore
 dotnet build
+```
 
-Ensure the solution builds successfully before proceeding.
+Proceed after the solution builds successfully.
 
-6. Entity Framework Core Database Migrations
-The EF Core Code First migration files are included in the repository under:
+## 6. Apply EF Core Migrations
 
-OrderManagement.Infrastructure/Migrations/
-These migrations create the required database schema and tables automatically.
+Existing migration files are stored in `OrderManagement.Infrastructure/Migrations/`. Apply these files; **do not create a new initial migration**.
 
-Visual Studio (Windows)
-Open:
+**Visual Studio (Windows):** Open **Tools → NuGet Package Manager → Package Manager Console** and run:
 
-Tools → NuGet Package Manager → Package Manager Console
-
-Select OrderManagement.Infrastructure as the default project.
-
-If EF Core Tools is not available, install it using the version matching the project's EF Core packages:
-
-Install-Package Microsoft.EntityFrameworkCore.Tools -Version 8.0.11 -ProjectName OrderManagement.Infrastructure
-
-Apply the existing migrations:
-
+```powershell
 Update-Database -Project OrderManagement.Infrastructure -StartupProject OrderManagement.API -Context OrderManagementDbContext
+```
 
-Visual Studio Code / Terminal
-Install the EF Core CLI tool if it is not already installed:
+If the EF Core Package Manager Console commands are unavailable, install the `Microsoft.EntityFrameworkCore.Tools` package with the version matching the project's EF Core packages.
 
+**VS Code / terminal:** If `dotnet ef` is not installed, run:
+
+```bash
 dotnet tool install --global dotnet-ef --version 8.0.11
+```
 
-Verify the installation:
+Then apply migrations:
 
-dotnet ef --version
+```bash
+dotnet ef database update --project OrderManagement.Infrastructure --startup-project OrderManagement.API --context OrderManagementDbContext
+```
 
-Apply the existing database migrations:
+Migrations create/update the database tables automatically, provided the configured database account has sufficient permissions.
 
-dotnet ef database update \
-  --project OrderManagement.Infrastructure \
-  --startup-project OrderManagement.API \
-  --context OrderManagementDbContext
+## 7. Run the Application
 
-The database and required tables will be created automatically when the configured SQL Server account has sufficient permissions. Manual table creation is not required.
+- **Visual Studio:** Set `OrderManagement.API` as the startup project and press **F5**.
+- **VS Code / terminal:**
 
-The existing migrations should be used; creating a new initial migration is not required.
-================================================
-7. Run the Application
-Visual Studio (Windows)
-Set OrderManagement.API as the startup project.
-
-Press F5 or click the Run button.
-
-Swagger will be available in the Development environment.
-=========================================================
-Visual Studio Code (macOS)
-Run the following command:
-
+```bash
 dotnet run --project OrderManagement.API
+```
 
-The application URL will be displayed in the terminal.
+Open the application's Swagger page at `<application-url>/swagger`. Use the actual URL printed in the terminal or configured in `OrderManagement.API/Properties/launchSettings.json`.
 
-Open Swagger using the application URL followed by /swagger.
+## 8. Test APIs Using Postman
 
-The application port is configured in:
+After the application builds and starts:
 
-OrderManagement.API/Properties/launchSettings.json
-=======================================================
-8. Test APIs Using Postman
-The Postman collection is included in the GitHub repository for testing all available APIs.
+1. Open the repository's **`postman`** folder, find the Postman collection `.json` file, and import it using **Postman → Import → File**.
+2. Set the collection's base URL to the running API address.
+3. **First call** `POST /api/auth/getoken` with this JSON body:
 
-Step 1 — Import the Postman Collection
-After the application builds and runs successfully:
+   ```json
+   {
+     "username": "admin",
+     "password": "Admin@12345"
+   }
+   ```
 
-Navigate to the postman folder in the repository.
+4. Copy the `accessToken` from the authentication response.
+5. In Postman, select the collection → **Authorization → Bearer Token**, paste the token, and save. Protected requests should use **Inherit auth from parent**.
+6. Test Customer APIs, then Product APIs, then Order APIs. Create a customer and product before creating an order.
 
-Locate the Postman collection JSON file.
-
-Open Postman and click Import.
-
-Select the collection JSON file and import it.
-
-All configured API requests will be available in Postman.
-
-Verify that the collection base URL matches the running application URL.
-
-Step 2 — Generate JWT Access Token
-First, execute the Authentication API.
-
-Endpoint:
-
-POST /api/auth/getoken
-Request Body:
-
-{
-  "username": "admin",
-  "password": "Admin@12345"
-}
-
-Response:
-
-{
-  "accessToken": "GENERATED_JWT_TOKEN",
-  "tokenType": "Bearer"
-}
-
-Copy the accessToken from the response.
-
-Step 3 — Configure Authorization
-In Postman:
-
-Select the imported collection.
-
-Open the Authorization tab.
-
-Select Bearer Token as the authorization type.
-
-Paste the generated JWT access token.
-
-Save the collection.
-
-Ensure protected API requests use Inherit auth from parent.
-
-The token can now be used to access all protected Customer, Product, and Order APIs.
-
-Step 4 — Execute the APIs
-Execute the APIs in the following order:
-
-Create Customer
-
-Get All Customers
-
-Get Customer By ID
-
-Create Product with available stock
-
-Get All Products
-
-Create Order using the Customer ID and Product ID
-
-Get Order By ID
-
-Update Order Status
-
-Verify Product Stock
-
-If the token expires, execute the Authentication API again and update the Bearer Token.
+If the token expires, call the Auth API again and replace the token.
 
 ## 9. API Endpoints
 
-| Method |     Endpoint |         Description |
+| Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/auth/getoken` | Generate JWT token |
 | POST | `/api/customers` | Create customer |
@@ -284,121 +183,89 @@ If the token expires, execute the Authentication API again and update the Bearer
 | GET | `/api/orders/{id}` | Get order details |
 | PATCH | `/api/orders/{id}/status` | Update order status |
 
-Authentication: All APIs except `/api/auth/getoken` require a valid JWT token.
+All endpoints except the Auth API require a valid JWT token. Refer to the included Postman collection for request bodies and additional routes.
 
-API Testing: Import the included Postman collection for request bodies and endpoint testing..
+## 10. Project Structure
 
-10. Project Structure
+```text
 OrderManagementSystem/
-│
-├── OrderManagement.API/
-│   ├── Controllers/
-│   ├── Middleware/
-│   ├── Properties/
-│   ├── Program.cs
-│   └── appsettings.json
-│
-├── OrderManagement.Application/
-│   ├── Auth/
-│   ├── Common/
-│   ├── Customers/
-│   ├── Products/
-│   ├── Orders/
-│   └── Interfaces/
-│
-├── OrderManagement.Domain/
-│   ├── Entities/
-│   └── Enums/
-│
-├── OrderManagement.Infrastructure/
-│   ├── Data/
-│   ├── Repositories/
-│   └── Migrations/
-│
-├── postman/
+├── OrderManagement.API/             # Controllers, middleware, Program.cs
+├── OrderManagement.Application/     # Services, DTOs, interfaces
+├── OrderManagement.Domain/          # Entities and enums
+├── OrderManagement.Infrastructure/  # DbContext, repositories, migrations
+├── postman/                         # API collection JSON
 ├── OrderManagementSystem.sln
-├── .gitignore
 └── README.md
-#11. Architecture and Design Decisions
-   The application follows Clean Architecture principles to ensure separation of concerns, maintainability, scalability, and testability.
+```
 
-Layer
+## 11. Architecture and Design Decisions
 
-Responsibility
+| Layer | Responsibility |
+|---|---|
+| Domain | Entities, enums, business rules |
+| Application | Services, DTOs, interfaces |
+| Infrastructure | Database, repositories, migrations |
+| API | Controllers, authentication, middleware, dependency injection |
 
-Domain-->Business, entities and enums
+- **Clean Architecture, SOLID, and Repository Pattern:** Separation of concerns and maintainable code.
+- **EF Core Code First:** Database schema managed through migrations.
+- **Async/await and CancellationToken:** Asynchronous operations.
+- **JWT and MemoryCache:** Protected APIs and token caching.
+- **Transactions and concurrency checks:** Consistent inventory updates.
+- **Middleware and Serilog:** Error handling and request/response logging.
+- **Standardized responses:** Consistent API response structure.
 
-Application-->Business logic, services, DTOs, and interfaces
+## 12. Assumptions and Business Rules
 
-Infrastructure-->Database access, repositories, and EF Core migrations
+- Admin authentication uses credentials configured in `appsettings.json`; user registration is out of scope.
+- Orders require existing customers/products, positive quantities, and sufficient stock.
+- Creating an order deducts stock; cancelling restores it.
+- Status flow: **Pending → Confirmed → Shipped**; Pending/Confirmed can also become **Cancelled**.
+- Shipped and Cancelled orders cannot change status.
+- SQL Server generates entity IDs.
 
-API ---> Controllers, authentication, middleware, and dependency injection
+## 13. Open-Source Libraries
 
-Design Decisions ---> Clean Architecture: Separation of business logic, database operations, and presentation layers.
+| Library | Purpose |
+|---|---|
+| `Microsoft.EntityFrameworkCore.SqlServer` / `Microsoft.EntityFrameworkCore.Design` | Database and migrations |
+| `Microsoft.AspNetCore.Authentication.JwtBearer` / `System.IdentityModel.Tokens.Jwt` | JWT authentication and token generation |
+| `Serilog.AspNetCore` | Structured logging |
+| `Swashbuckle.AspNetCore` | Swagger / OpenAPI |
+| `Microsoft.Extensions.Caching.Memory` | Token caching |
+| `Microsoft.Extensions.Configuration.Binder` | Configuration binding |
+| `Microsoft.Extensions.Logging.Abstractions` | Logging interfaces |
 
-SOLID Principles: Maintainable, loosely coupled, and reusable components.
+Package versions and dependencies are specified in the `.csproj` files and restored with `dotnet restore`. Visual Studio can restore NuGet packages automatically.
 
-Repository Pattern: Abstracts database operations from business logic.
+## 14. Logging
 
-Dependency Injection: Manages service and repository dependencies.
+Serilog and middleware log API requests, responses, HTTP status codes, execution times, business events, and exceptions. Logging settings are in `appsettings.json`.
 
-Entity Framework Core Code First: Manages database schema through migrations.
+## 15. HTTP Status Codes
 
-Asynchronous Programming: Uses async/await for database and API operations.
+| Code | Meaning |
+|---|---|
+| 200 / 201 | Success / Created |
+| 400 | Bad Request |
+| 401 / 403 | Unauthorized / Forbidden |
+| 404 | Not Found |
+| 500 | Internal Server Error |
 
-CancellationToken: Supports cancellation of asynchronous operations.
+## 16. Build and Verification
 
-JWT Authentication: Secures Customer, Product, and Order APIs.
+```bash
+dotnet restore
+dotnet build --configuration Release
+dotnet run --project OrderManagement.API
+```
 
-In-Memory Caching: Reuses generated JWT tokens until expiration.
+Verify authentication, customer/product creation, order creation, status changes, and stock restoration using Swagger or Postman.
 
-Database Transactions: Maintains consistency between order creation and inventory updates.
+## 17. Version Control
 
-Concurrency Handling: Conditional stock updates help prevent overselling.
+**GitHub:** https://github.com/anishmishradev/OrderManagementSystem
 
-Global Exception Handling: Centralized handling of application exceptions.
+Git is used for source control. The repository should include application source, EF Core migrations, Postman collection, and README.
 
-Request/Response Middleware: Logs API requests, responses, status codes, and execution time.
-
-Structured Logging: Uses Serilog and ILogger.
-
-Standardized API Responses: Maintains a consistent success and error response structure.
-
-#12. Assumptions and Business Rules
-
-  Admin authentication uses appsettings.json.
-  Orders require valid customers, products, and sufficient stock.
-  Stock decreases on purchase and is restored on cancellation.
-  Order flow: Pending → Confirmed → Shipped; Pending/Confirmed → Cancelled.
-  Shipped and Cancelled orders cannot be modified.
-
-13. Open-Source Libraries
-  EF Core / SQL Server: Database and migrations
-  JWT Bearer: Authentication
-  Serilog: Logging
-  Swagger: API documentation
-  MemoryCache: Token caching
-
-All NuGet dependencies are defined in .csproj files and restored automatically.
-
-14. Logging
-
-    Serilog logs API requests, responses, execution times, and exceptions.
-
-15. HTTP Status Codes
-
-    200 Success | 201 Created | 400 Bad Request | 401 Unauthorized | 403 Forbidden | 404 Not Found | 500 Server Error
-
-16. Build and Run
-
-  dotnet restore
-  dotnet build
-  dotnet run --project OrderManagement.API
-  
-  Test APIs using the included Postman collection or Swagger.
-
-17. GitHub Repository
-
-https://github.com/anishmishradev/OrderManagementSystem
-
-Tech Stack: .NET 8, C#, SQL Server, EF Core, JWT, Serilog, Swagger, Git.
+**Tech Stack:** .NET 8, C#, SQL Server, EF Core, JWT, Serilog, Swagger, Postman, Git, Clean Architecture.
