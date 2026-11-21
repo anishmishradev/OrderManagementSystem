@@ -14,6 +14,7 @@ using OrderManagement.Application.Interfaces.Services;
 using OrderManagement.Infrastructure.Data;
 using OrderManagement.Infrastructure.Repositories;
 using Serilog;
+using OrderManagement.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -145,7 +146,10 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 var app = builder.Build();
+//Middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
 // Swagger
 if (app.Environment.IsDevelopment())
 {
