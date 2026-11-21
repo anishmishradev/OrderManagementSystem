@@ -1,0 +1,505 @@
+{
+  "info": {
+    "_postman_id": "c4d4ea01-68ba-42ba-ba9c-c0ebe01f683c",
+    "name": "OrderManagementApi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "CreateOrder",
+          "id": "2c8b75cf-ca2b-4335-824e-4ceeddafcab9",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": 1,\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5118/api/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "OrderById",
+          "id": "8548e1b7-40b3-47cf-bec6-60701487b6ff",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5118/api/orders/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "orders",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "OrderStatus",
+          "id": "db148dc7-93a6-4200-b09d-f97b37c38f9f",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Cancelled\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5118/api/orders/1/status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "orders",
+                "1",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "6d47ab46-6a1f-4aa9-935e-bc62afdf76f7"
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "ProductStock",
+          "id": "b993ca87-11df-4ba9-b657-4891c1e2e34c",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stockQuantity\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5118/api/Products/1/stock",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Products",
+                "1",
+                "stock"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "productSearch",
+          "id": "f0fbca85-82cd-42db-93b5-87545152f9ee",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5118/api/Products/search?name=Monitor",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Products",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Monitor"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetProducts",
+          "id": "a50e30f9-8562-4e38-8faa-39edb4ccf678",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5118/api/Products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Products",
+          "id": "9e815290-e482-40c0-96ae-60e81a4196f0",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTIzNzY0OSwiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.VoUReq-9IWR7CGfQFs0F1WGxbrIuy_SMH7lUHD9TorE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Monitor\",\n  \"sku\": \"Lenovo-10c\",\n  \"price\": 5499,\n  \"stockQuantity\": 8\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5118/api/Products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Products"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "38429bc3-ba73-4c1f-bf84-542b8361ab80"
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Customers",
+          "id": "c7bb640b-bc26-4081-a95d-11ac7b0f9f3c",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTI0MDQ2NywiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.1WxTsaBhSuBg6CNpNjZDht89PZpoZfvumoNXhEQlyKs",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Umar Mughal\",\n  \"email\": \"umar@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5118/api/Customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customers",
+          "id": "ab76e574-329c-4b0e-9cd3-14ec7259683d",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTI0MDQ2NywiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.1WxTsaBhSuBg6CNpNjZDht89PZpoZfvumoNXhEQlyKs",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5118/api/Customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "customerById",
+          "id": "e9fa18ec-b524-422f-8206-63f043029e44",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTI0MDQ2NywiaXNzIjoiT3JkZXJNYW5hZ2VtZW50QVBJIiwiYXVkIjoiT3JkZXJNYW5hZ2VtZW50Q2xpZW50cyJ9.1WxTsaBhSuBg6CNpNjZDht89PZpoZfvumoNXhEQlyKs",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5118/api/Customers/1004",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5118",
+              "path": [
+                "api",
+                "Customers",
+                "1004"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "b11ffbf9-2dbb-4524-8fbb-3536f20f6363"
+    },
+    {
+      "name": "getoken",
+      "id": "397317e3-4570-4f51-ae68-2e7c1a17d3c0",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin@12345\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5118/api/auth/getoken",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5118",
+          "path": [
+            "api",
+            "auth",
+            "getoken"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
