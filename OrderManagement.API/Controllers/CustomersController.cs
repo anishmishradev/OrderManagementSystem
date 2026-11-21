@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Application.Common;
 using OrderManagement.Application.Customers.DTOs;
 using OrderManagement.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace OrderManagement.Api.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CustomersController : ControllerBase
